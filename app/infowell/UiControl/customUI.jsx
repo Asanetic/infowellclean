@@ -2,7 +2,6 @@ import { LiveSearchDropdown } from "./componentControl"
 import { closeMosyCard, MosyCard } from "../../components/MosyCard";
 
 import { magicRandomStr } from "../../MosyUtils/hiveUtils";
-import { customEventHandler } from "../../../../octaneorbit/app/octaneorbit/DataControl/customDataFunction";
 
 //dynamic live search / organic live search 
 export function MosyLiveSearch({
@@ -64,7 +63,7 @@ export function MosyLiveSearch({
           closeMosyCard()
         }
 
-        //customEventHandler(actionData)
+       / //customEventHandler(actionData)
       }      
     }
   
