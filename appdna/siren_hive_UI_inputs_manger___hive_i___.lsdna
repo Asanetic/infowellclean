@@ -1,0 +1,369 @@
+eval(find_snippet('986'));
+eval(find_snippet("1171")); // camel case 
+
+$custom_col_main_file__="../appdna/custom_colums.php";
+$table_config_file__="../appdna/infowell/infosnippets/tbl_attr/tbl_attr_snippetmgr_dnaaf.php";
+
+if(file_exists($custom_col_main_file__))
+{
+  include($custom_col_main_file__);
+}
+
+$primary_table__="infosnippets";
+$tbl_id_column_name="primkey";
+$record_id_col_name="record_id";
+
+
+$nextjs_tbl_alias="snippets";
+
+// Report configurations
+$main_report_title_="Info snippets";
+$api_endpoint_name="manage";
+
+$multigrid_col_span="9";
+$enable_multigrid_view_more_link ="";
+  
+$last_file_name=str_replace(" ","", strtolower($main_report_title_));//$api_endpoint_name;
+
+$profile_file_name="profile";
+$list_file_name="list";
+
+$back_to_list_ = "./$list_file_name";
+
+
+$next_js_custom_profile_card=[
+"infosnippets"=>[
+  'card_name'=>"UserProfileCard", 
+ "layout_tag"=>'
+ <UserProfileCard
+  navigationIsle={{navigationIsle}}
+  profileTitle={{profileTitle}}
+  profilePic={{profilePic}}
+  profileUploadBtn={{profileUploadBtn}}
+  mainContent={{mainContent}}
+/>']
+  ];
+
+
+$next_js_custom_List_card=[
+"infosnippets"=>[
+  'card_name'=>"BlogCard",   
+   "replacements"=>[
+    "editLink"=>"editlink",
+    "photoNode"=>"media",
+    "node1"=>"title",
+    "node2"=>"tag",
+    "node3"=>"date_created"
+    ]
+  
+  ]
+  
+ ];
+  
+
+
+
+$single_table_call=$primary_table__;
+
+include($table_config_file__);
+
+include('../appdna/blueprint.php');
+
+if (!file_exists($features_folder)) mkdir($features_folder);
+$features_app_folder=$features_folder;
+if (!file_exists($features_app_folder)) mkdir($features_app_folder);
+
+
+
+///=================================== basic template setup 
+
+$override_def_col_size="col-md-6 hive_data_cell ";
+
+$skip_hive_sites=["hive_site_id","hive_site_name"];
+
+$skip_cols_list=array_merge($skip_hive_sites, $skip_cols_list);
+
+$skip_cols_profile=array_merge($skip_hive_sites, $skip_cols_profile);
+
+$override_segmentation_section_class="col-md-12 bg-white border border_set shadow-md p-4 mb-4 hive_form_section";
+
+$additional_details_segment_title="";
+  
+$col_size_def='col-md-12';
+
+$def_profile_container_class="col-md-11 rounded text-left p-2 mb-0  bg-white ";
+$def_profile_inner_container_class="col-md-12 p-2 pr-lg-4 pl-lg-4 m-0";  
+$override_justify_class="justify-content-center";
+$overide_img_section_class="col-md-6 mr-lg-5";
+$override_large_col_size="col-md-12 hive_data_cell";
+$image_style_="rounded_avatar";
+///=================================== basic template setup 
+
+
+$clone_data_class=""; //d-none
+$js_profile="";
+$jsgrid_edit_row_id="";
+
+$mp_profile="yes";
+$profile_top_btns ="";
+$api_node="ags";
+$write_files_="";
+  
+$write_profile_file="yes"; // yes || no
+$write_list_file="yes"; // yes || no
+
+
+$custom_uptoken_link="";
+
+$write_list_query_line=$write_list_file; // yes || ""
+$write_profile_query_line=$write_profile_file; // yes || ""
+
+
+// @extract config 
+// @show cols 
+// 
+// custom
+
+
+$milknavbar="adminnav.php"; // milknavbar
+
+eval(find_snippet("990"));
+eval(find_snippet("1011"));
+
+$camelcasetbl=strtoCamelCase($last_file_name);
+$camelcasetbl_prefix=strtoCamelCase($last_file_name, true);
+
+$main_file_name=''.$camelcasetbl_prefix.'Profile';
+$parent_profile_name='';
+$main_file_list_dd=$parent_profile_name;
+
+$widget_file_name="".$primary_table__."_".$main_file_name;
+$script_file_name="_srt_".$main_file_name."_";
+
+$billing_q_str='$gft_'.$primary_table__.' order by primkey desc';
+
+if($site_id_filter_config!="")
+{
+  $billing_q_str=' Where $gft_'.$primary_table__.'_and '.$site_id_filter_config.' order by primkey desc ';
+}
+
+$custom_select_query="*";
+
+
+$script_filter_str=$billing_q_str;
+
+//$script_filter_str='where $gft_'.$primary_table__.'_and transfer_type= \'Stock Out\' order by primkey desc';
+
+
+echo '<hr>List Widget --- '.$camelcasetbl_prefix.'List <br>';
+echo 'Profile Widget --- '.$camelcasetbl_prefix.'Profile <br>';
+echo 'Event Inteprate --- Inteprate'.$camelcasetbl_prefix.'Event <hr>';
+
+
+$add_new_data_entry_page=$main_file_name."_profile";
+
+$dna_report_name=$main_file_name."_".$main_report_title_;
+
+//save for later remove if not needed
+/* 
+import  AdMediaAdmediaList from '../../admedia/uiControl/AdMediaAdmediaList';
+
+import  AdMediaAdmediaProfile from '../../admedia/uiControl/AdMediaAdmediaProfile';
+
+import logo from '../../../img/logo/logo.png'; // outside public!
+
+import  ".$camelcasetbl_prefix."List from './".$camelcasetbl_prefix."List';
+
+import logo from '../../../img/logo/logo.png'; // outside public!
+import  ".$camelcasetbl_prefix."List from './".$camelcasetbl_prefix."List';
+ 
+//depositbymode data & component 
+//list 
+import DeposithistoryList from '../../depositbymode/uiControl/DeposithistoryList';
+import {InteprateDeposithistoryEvent} from '../../depositbymode/dataControl/DeposithistoryRequestHandler';
+
+//profile 
+import DeposithistoryProfile from '../../depositbymode/uiControl/DeposithistoryProfile';
+
+
+import { 
+         MosyDateInputComponent,
+         SubmitButtons,
+         MosyImageViewer,
+         MosyFileUploadButton,
+         AddNewButton, 
+         SmartDropdown,
+         LiveSearchDropdown
+       } from '../../UiControl/componentControl';
+*/
+
+$additional_imports="
+import logo from '../../../img/logo/logo.png'; // outside public!
+
+import  ".$camelcasetbl_prefix."List from './".$camelcasetbl_prefix."List';
+
+import { 
+         SubmitButtons,
+         AddNewButton, 
+         LiveSearchDropdown,
+         MosySmartField,
+         MosyActionButton,
+         SmartDropdown,
+         MosyImageViewer,
+         MosyFileUploadButton
+       } from '../../UiControl/componentControl';
+import { MosyLiveSearch } from '../../UiControl/customUI';
+
+";
+
+$additional_list_imports="
+import { MosyLiveSearch } from '../../UiControl/customUI';
+";
+
+$customProfileData="{}";
+/*$customProfileData='
+//bank id data 
+{
+    deposit_file_id : (bankingNode?.record_id || ""),
+    station_id : (bankingNode?.station_id || ""),
+    shift_id : (bankingNode?.shift_code || ""),
+    _fuel_stations_station_name_station_id: (bankingNode?._fuel_stations_station_name_station_id || ""),
+    _banking_record_id_deposit_file_id: (bankingNode?.record_id || "")
+}
+
+';*/
+ 
+
+//main widget configs
+$widget_and_ist_array=[
+
+    $primary_table__=>["file_name"=>$widget_file_name, "file_title"=>$main_report_title_, "parent_profile_name"=>$parent_profile_name, "parent_file_name"=>$parent_profile_name,"add_new_file"=>$add_new_data_entry_page, "query_script_file"=>":".$script_file_name]
+
+  ];
+
+/// mini list creator configs
+$mini_list_array=[
+  
+     "tag ='\${infosnippetsNode?.tag}' order by primkey desc "=>''.$camelcasetbl_prefix.'List:{`Related ${infosnippetsNode?.tag} Notes`}:../snippets/list:::InteprateInfosnippetsEvent', 
+     ""=>''.$camelcasetbl_prefix.'List:{`More Notes`}:../snippets/list:::InteprateInfosnippetsEvent', 
+     //"deposit_file_id='\${bankingNode?.record_id}' order by primkey desc "=>'DeposithistoryList:{`Deposits list`}:../inventory/fuel::hide:InteprateDeposithistoryEvent', 
+    
+  ];
+
+/// mini list creator configs
+$subprofile_list_array=[
+    /*"where deposit_file_id ='\${bankingNode?.record_id}' order by primkey desc  "=>'DeposithistoryProfile:{`Manage Deposits`}:../staff:../staff/profile:hide:InteprateDeposithistoryEvent
+:setDeposithistoryCustomProfileQuery:deposits_by_mode', */ 
+
+  ];
+
+
+/// button maker configs
+$list_btn_table_array=[
+  
+  $primary_table__=>[
+          
+    "tag: Search by tag"=>"
+      MosyLiveSearch({
+        api:' /api/infowell/snippets/infosnippets', 
+        displayField:'tag', 
+        tableName:'infosnippets',
+        actionName : 'mosyfilter',
+        title:'Search by tag',
+        actionData : {path: '../snippets/list', router : router , qstr : `tag='{{tag}}'`, stateSetters : stateItemSetters}        
+        })
+        
+        ",
+    
+    "bolt: Search by title"=>"
+      MosyLiveSearch({
+        api:' /api/infowell/snippets/infosnippets', 
+        displayField:'title', 
+        tableName:'infosnippets',
+        actionName : 'mosyfilter',
+        title:'Search by title',
+        actionData : {path: '../snippets/list', router : router , qstr : `primkey='{{primkey}}'`, stateSetters : stateItemSetters}        
+        })
+        
+        ",    
+      //"edit: Review request"=>"console.log(`first next js button....`)",
+      //"search: Search users"=>"console.log(`first next js button users test....`)",
+      //"refresh: sync work schedule"=>"syncWorkSchedule()"
+  ],
+
+  
+];
+
+$profile_btn_table_array=[
+  
+  $primary_table__=>[
+    "copy: Find notes"=>"
+      MosyLiveSearch({
+        api:' /api/infowell/snippets/infosnippets', 
+        displayField:'title', 
+        tableName:'infosnippets',
+        actionName : 'load_profile',
+        title:'Search by title',
+        actionData : {path: '../snippets/profile', router : router , token : `{{primkey}}`, stateSetters : stateItemSetters , actionName:`load_profile`}        
+        })
+        
+        ",  
+      //"edit: Review request"=>"console.log(`first next js button....`)",
+      //"search: Search users"=>"console.log(`first next js button users test....`)",
+      //"refresh: sync work schedule"=>"syncWorkSchedule()"
+  ],
+
+  
+];
+
+
+
+//// drop down configs
+
+$global_new_drop_down_link_arr=[
+  
+    $primary_table__=>[
+      //"edit: Review request"=>"{actionName:'filter_client',data:'2492049'}",
+      //"search: Search users"=>"{}",
+      //"refresh: sync work schedule"=>"{}"
+  ],
+];
+     
+
+eval(find_snippet("1184"));
+
+/// build ui file 
+eval(find_snippet("1182")); // next js sub profile builder
+//include("../subprofile.php");
+
+eval(find_snippet("1172")); // build mini list
+//include('../minilist.php');
+
+eval(find_snippet("1173")); // next js profile builder
+//include('../profile_builder.php');
+
+eval(find_snippet("1178")); // next js client logic builder builder
+//include('../beBuilder.php');
+
+eval(find_snippet("1179")); // next js route js builder
+//include("../routejsbuilder.php");
+
+eval(find_snippet("1176")); // next js list builder
+//include('../listbulder.php');
+
+eval(find_snippet("1180")); // next js column factory
+eval(find_snippet("1177")); // next js mutations builder
+
+///create assembly file 
+$assembly_folder_="../appdna/$appname";
+
+if (!file_exists($assembly_folder_)) mkdir($assembly_folder_);
+$assembly_table_folder_=$assembly_folder_."/".$primary_table__;
+
+if (!file_exists($assembly_table_folder_)) mkdir($assembly_table_folder_);
+
+$assembly_dna_file__=$assembly_table_folder_."/$dna_report_name.Dnaaf";
+
+
+Recycle($assembly_dna_file__);
+bend_write_to_file($assembly_dna_file__, $_POST['txt_new_code']);
