@@ -135,8 +135,8 @@ const MosyUiTheme = () => (
 }
 
 .main_list_container{
-  padding-left:5px!important;
-  padding-right:5px!important;
+  padding-left:20px!important;
+  padding-right:20px!important;
 }          
 .fancy-gradient-spinner {
   width: 90px;
