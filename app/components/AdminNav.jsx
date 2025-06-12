@@ -43,7 +43,7 @@ export default function NavSidebar({
   return (
     <>
       <div className="header">
-        <div className="header-left d-none">
+        <div className="header-left d-lg-none">
           <a className="mobile_btn cpointer" id="mobile_btn">
             <i className="fa fa-bars" />
           </a>
