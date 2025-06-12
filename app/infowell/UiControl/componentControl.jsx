@@ -860,7 +860,7 @@ useEffect(() => {
 
       <div className="col-md-4 p-2">
       <label className="badge">{currentPageSize === 10000000000 ? 'Showing All rows' : `Show ${currentPageSize} rows per page`} | Change</label>
-      <select className="rows_per_record w-auto" value={currentPageSize} onChange={handlePageSizeChange}>
+      <select className="rows_per_record" value={currentPageSize} onChange={handlePageSizeChange}>
         {pageSizeOptions.map(size => (
             <option key={size} value={size}>
               {size === 10000000000 ? 'Show All' : `${size}`}
