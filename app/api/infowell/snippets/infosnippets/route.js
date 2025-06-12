@@ -144,7 +144,7 @@ const InfosnippetsInputsArr = {
                   if(body["txt_infosnippets_media"].size>0){
                   try {
                     
-                    const filePath = await mosyUploadFile(body[ "txt_infosnippets_media"]);
+                    const filePath = await mosyUploadFile(body[ "txt_infosnippets_media"], "media/infosnippets");
                     
                     InfosnippetsInputsArr.media = filePath; // Update file path in the database
 
@@ -181,7 +181,7 @@ const InfosnippetsInputsArr = {
                   if(body["txt_infosnippets_media"].size>0){
                   try {
                     
-                    const filePath = await mosyUploadFile(body[ "txt_infosnippets_media"]);
+                    const filePath = await mosyUploadFile(body[ "txt_infosnippets_media"], "media/infosnippets");
                     
                     InfosnippetsInputsArr.media = filePath; // Update file path in the database
 

@@ -202,7 +202,7 @@ export function magicBasename(input = null) {
 }
 
 
-export function magicTrimText(text, length, stripIf = length) {
+export function magicTrimText(text, length=20, stripIf = length) {
   try {
     const plainText = String(text).replace(/<[^>]+>/g, '');
 

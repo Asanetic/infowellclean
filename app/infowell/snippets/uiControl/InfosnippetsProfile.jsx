@@ -213,7 +213,7 @@ export default function InfosnippetsProfile({ dataIn = {}, dataOut = {} }) {
               {/*    Title isle      */}
               
             </div>}
-            profilePic={infosnippetsNode?.media || ""}
+            profilePic={`/api/mediaroom?media=${btoa(infosnippetsNode?.media || '')}`}
             profileUploadBtn={<div className='row justify-content-center col-md-12 m-0 p-0'>
               <MosyFileUploadButton
               tblName="infosnippets"

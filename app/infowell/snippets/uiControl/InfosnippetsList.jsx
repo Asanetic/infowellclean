@@ -30,8 +30,9 @@ import { loadInfosnippetsListData, popDeleteDialog, InteprateInfosnippetsEvent  
 //state management
 import { useInfosnippetsState } from '../dataControl/InfosnippetsStateManager';
 
+import logo from '../../../img/logo/logo.png'; // outside public!
+
 import { MosyLiveSearch } from '../../UiControl/customUI';
-import {BlogCard} from '../../../components/ListLayout'
 
 export default function InfosnippetsList({ dataIn = {}, dataOut = {} }) {
   
@@ -97,7 +98,6 @@ export default function InfosnippetsList({ dataIn = {}, dataOut = {} }) {
           </div>
           <div className="col-md-12 p-0 hive_list_nav_right_ribbon" id="">
             {/*--<navgation_buttons/>--*/}
-            <a href="list" className="medium_btn border border_set btn-white hive_list_nav_refresh ml-3"><i className="fa fa-refresh mr-1 "></i> Refresh </a>
             
             <MosyActionButton
             label=" Search by tag"
@@ -131,44 +131,106 @@ export default function InfosnippetsList({ dataIn = {}, dataOut = {} }) {
             }}
             />
             
+            <a href="list" className="medium_btn border border_set btn-white hive_list_nav_refresh ml-3"><i className="fa fa-refresh mr-1 "></i> Refresh </a>
             
             <AddNewButton link={customProfilePath} label="New Note " icon="plus-circle" />
           </div>
         </div>
       </div> )}
       
-      <div className="row justify-content-center m-0 p-0 col-md-12" id="">
-        {stateItem.infosnippetsLoading ? (
-          <h5 className="col-md-12 text-center p-3 mb-5 text-muted"><i className="fa fa-spinner fa-spin"></i> Loading Info snippets ...</h5>
-        ) : stateItem.infosnippetsListData.length > 0 ? (
-          stateItem.infosnippetsListData.map((listinfosnippets_result, index) => (
+      
+      <div className="table-responsive  data-tables bg-white bottom_tbl_handler">
+        
+        <table className="table table-hover  text-left printTarget" id="infosnippets_data_table">
+          <thead className="text-uppercase">
+            <tr>
+              <th scope="col">#</th>
+              <th>Media</th>
+              <th scope="col"><b>Title</b></th>
+              <th scope="col"><b>Tag</b></th>
+              <th scope="col"><b>Notes</b></th>
+              <th scope="col"><b>Date Created</b></th>
+              
+            </tr>
             
-            <BlogCard
-            key={listinfosnippets_result.primkey}
-            editLink={`${customProfilePath}?infosnippets_uptoken=${btoa(listinfosnippets_result.primkey)}`}
-            photoNode={listinfosnippets_result.media}
-            node1={listinfosnippets_result.title}
-            node2={listinfosnippets_result.tag}
-            node3={listinfosnippets_result.date_created}
-            
-            />
-          ))
-        ) : (
-          
-          
-          <div className="col-md-12 text-center mt-4">
-            <h6 className="col-md-12 text-center p-3 mb-5 text-muted"><i className="fa fa-search"></i> Sorry, no infosnippets records found</h6>
-            
-            <AddNewButton link={customProfilePath} label="New Note " icon="plus-circle" />
-            <div className="col-md-12 pt-5 " id=""></div>
-          </div>
-        )}
+          </thead>
+          <tbody>
+            {stateItem.infosnippetsLoading ? (
+              <tr>
+                <th scope="col">#</th>
+                <td colSpan="5" className="text-muted">
+                  <h5 className="col-md-12 text-center p-3 mb-5 text-muted"><i className="fa fa-spinner fa-spin"></i> Loading Info snippets ...</h5>
+                </td>
+              </tr>
+            ) : stateItem.infosnippetsListData?.length > 0 ? (
+              stateItem.infosnippetsListData.map((listinfosnippets_result, index) => (
+                <Fragment key={`_row_${listinfosnippets_result.primkey}`}>
+                  <tr key={listinfosnippets_result.primkey}>
+                    <td>
+                      <div className="table_cell_dropdown">
+                        <div className="table_cell_dropbtn"><b>{listinfosnippets_result.row_count}</b></div>
+                        <div className="table_cell_dropdown-content">
+                          <MosySmartDropdownActions
+                          tblName="infosnippets"
+                          setters={{
+                            
+                            childStateSetters: stateItemSetters,
+                            parentStateSetters: parentStateSetters
+                            
+                          }}
+                          
+                          attributes={`${listinfosnippets_result.primkey}:${customProfilePath}:false`}
+                          callBack={(incomingRequest) => {setChildDataOut(incomingRequest) }}
+                          
+                          />
+                          
+                        </div>
+                      </div>
+                    </td>
+                    
+                    <td>
+                      <MosyImageViewer
+                      media={`/api/mediaroom?media=${btoa((listinfosnippets_result.media || ""))}`}
+                      mediaRoot={""}
+                      defaultLogo={logo.src}
+                      imageClass="small_thumbnail"
+                      />
+                    </td>
+                    <td scope="col"><span title={listinfosnippets_result.title}>{magicTrimText(listinfosnippets_result.title, 70)}</span></td>
+                    <td scope="col"><span title={listinfosnippets_result.tag}>{magicTrimText(listinfosnippets_result.tag, 70)}</span></td>
+                    <td scope="col"><span>{magicTrimText(listinfosnippets_result.notes, 70)}</span></td>
+                    <td scope="col"><span title={listinfosnippets_result.date_created}>{mosyFormatDateOnly(listinfosnippets_result.date_created)}</span></td>
+                    
+                  </tr>
+                  
+                </Fragment>
+                
+              ))
+              
+            ) : (
+              
+              <tr><td colSpan="6" className="text-muted">
+                
+                
+                <div className="col-md-12 text-center mt-4">
+                  <h6 className="col-md-12 text-center p-3 mb-5 text-muted"><i className="fa fa-search"></i> Sorry, no infosnippets records found</h6>
+                  
+                  <AddNewButton link={customProfilePath} label="New Note " icon="plus-circle" />
+                  <div className="col-md-12 pt-5 " id=""></div>
+                </div>
+              </td></tr>
+              
+            )}
+          </tbody>
+        </table>
+        
         <MosyPaginationUi
         tblName="infosnippets"
         totalPages={stateItem.infosnippetsListPageCount}
         stateItemSetters={stateItemSetters}
         />
       </div>
+      
       
     </form>
     {/* snack notifications -- */}

@@ -98,24 +98,36 @@ export function base64Decode(encodedStr) {
 }
 
 
-export async function mosyUploadFile(fileObj, subDir = 'img/uploads') {
+export async function mosyUploadFile(fileObj, subDir = 'uploads/users') 
+{
   try {
-    const baseUploadDir = path.join(process.cwd(), 'public', subDir);
+    // Base upload path inside your app folder (NOT public)
+    //const baseUploadDir = path.join(process.cwd(), subDir);
+    const baseUploadDir = path.join(process.cwd(), 'storage', subDir);
 
-    // Create folder if it doesn’t exist
+    // Ensure the folder exists
     if (!fs.existsSync(baseUploadDir)) {
       await mkdir(baseUploadDir, { recursive: true });
     }
 
+    // Save the file
     const buffer = Buffer.from(await fileObj.arrayBuffer());
     const fileName = `${Date.now()}_${fileObj.name}`;
     const filePath = path.join(baseUploadDir, fileName);
 
-    // Save file
     await writeFile(filePath, buffer);
 
-    // Return public-facing path
-    return `/${subDir}/${fileName}`;
+    const relativePath =path.join(subDir, fileName);
+
+    // Return relative path for internal reference
+    /*return {
+      relativePath: path.join(subDir, fileName),
+      fullPath: filePath,
+      fileName: fileName
+    };*/
+
+    return `${subDir}/${fileName}`;  // ✅ proper URL/path
+
   } catch (err) {
     console.error('[UPLOAD ERROR]', err);
     throw new Error('File upload failed');

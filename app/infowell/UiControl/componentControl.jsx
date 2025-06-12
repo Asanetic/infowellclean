@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 import {MosyFilterEngine} from "../DataControl/MosyFilterEngine";
-import { mosyPostFormData, mosyGetData, mosyUpdateUrlParam, mosyUrlParam, magicRandomStr, mosySetLSData, mosyGetLSData, deleteUrlParam, mosyFormatDateOnly, mosyFormatDateTime } from '../../MosyUtils/hiveUtils';
+import { mosyPostFormData, mosyGetData, mosyUpdateUrlParam, mosyUrlParam, magicRandomStr, mosySetLSData, mosyGetLSData, deleteUrlParam, mosyFormatDateOnly, mosyFormatDateTime, magicTrimText } from '../../MosyUtils/hiveUtils';
 
 import {MosyCard, closeMosyCard } from "../../components/MosyCard";   
 
@@ -256,64 +256,90 @@ export function MosyGridRowOptions({
 
 export function MosyImageViewer({
   media,
-  mediaRoot,
   defaultLogo,
-  imageClass = "rounded_avatar", // passed as string: 'product_image' etc.
+  imageClass = "rounded_avatar",
+  forceImg = true,
   defaultSize = "",
 }) {
   const isImage = (filePath) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(filePath);
-
   const borderStyle_ = defaultSize ? "" : "border";
 
-  const finalMediaPath = media ? `${mediaRoot}${media}` : defaultLogo;
+  const isMediaAvailable = media &&
+  typeof media === 'string' &&
+  media.trim() !== '' &&
+  !media.trim().endsWith('?media=');
+
+  // 👇 If the path already includes ?media= treat it as a full API URL
+  const isQueryPath = isMediaAvailable && media.includes('?media=');
+
+  const finalMediaPath = isQueryPath
+    ? media
+    : isMediaAvailable
+      ? `/storage/${media}` // Or whatever your direct storage path would be
+      : defaultLogo;
+
+      console.log(`isMediaAvailable`, media, isMediaAvailable)
 
   const handleImageClick = (path) => {
-    //window.open(path, "_blank");
-    MosyNotify({message : "Photo"})
+    MosyCard("",<MosyImageViewer media={media} imageClass="product_image"/>);
   };
 
-  if (media && isImage(media)) {
+  // 🖼️ Image File (with .jpg, .png etc.)
+  if (isMediaAvailable && isImage(media)) {
     return (
       <img
         src={finalMediaPath}
         onClick={() => handleImageClick(finalMediaPath)}
-        className={`cpointer border ${borderStyle_} ${imageClass}`}
+        className={`cpointer ${borderStyle_} ${imageClass}`}
         alt="Uploaded media"
       />
     );
-  } else if (media) {
-    const fileName = media.split("/").pop();
+  }
+
+  // 📎 If it's a non-image file (like .pdf, .doc etc.)
+  if (isMediaAvailable && !isImage(media) && !forceImg) {
+    const fileName = decodeURIComponent(media.split("/").pop());
     return defaultSize ? (
       <i
         className="fa fa-paperclip cpointer"
         style={{ fontSize: "50px" }}
-        title={fileName}
+        title={magicTrimText(fileName)}
         onClick={() => window.open(finalMediaPath, "_blank")}
-        //onClick={() => {MosyConfirm({message : "Photo"})}}
       ></i>
     ) : (
       <a href={finalMediaPath} target="_blank" rel="noopener noreferrer" className="d-block">
         <i className="fa fa-paperclip" style={{ fontSize: "70px" }}></i>
         <br />
-        {fileName}
+        {magicTrimText(fileName)}
         <hr />
         <i className="fa fa-download"></i> Download
       </a>
     );
   }
 
-  // Fallback logo
+// 🔁 Force image rendering fallback 
+if (forceImg && isMediaAvailable) {
   return (
     <img
-      src={defaultLogo}
-      onClick={() => handleImageClick(defaultLogo)}
-      className={`border ${borderStyle_} ${imageClass}`}
-      alt="Default logo"
+      src={finalMediaPath}
+      onClick={() => handleImageClick(finalMediaPath)}
+      className={`cpointer ${borderStyle_} ${imageClass}`}
+      alt="Fallback logo"
     />
   );
 }
 
 
+  // 🧱 Default logo fallback
+  return (
+    <img
+      src={defaultLogo}
+      onClick={() => handleImageClick(defaultLogo)}
+      className={`cpointer ${borderStyle_} ${imageClass}`}
+      alt="Default logo"
+    />
+  );
+}
 
 
 
@@ -608,7 +634,7 @@ export function LiveSearchDropdown({
           )}
           {results.map((item) => (
             <li
-              key={item[valueField]}
+              key={`${item[valueField]}=${magicRandomStr()}`}
               className="list-group-item list-group-item-action"
               onClick={() => handleSelect(item)}
               style={{ cursor: 'pointer' }}
@@ -988,7 +1014,7 @@ export function MosyRangeSlider({
 export function MosyActionButton({ source = "" , label, icon, onClick, className = '' }) {
   return (
     <a
-      className={`medium_btn border border_set btn-white ml-3 mb-3 d-inline-block cpointer ${className}`}
+      className={`medium_btn border border_set btn-white mr-2 mb-3 d-inline-block cpointer ${className}`}
       onClick={onClick}
     >
       {icon && <i className={`fa fa-${icon} mr-1`}></i>}
