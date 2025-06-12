@@ -189,7 +189,8 @@ const InfosnippetsInputsArr = {
                     await mosySqlUpdate("infosnippets", { media: filePath }, body, `primkey='${infosnippets_uptoken_value}'`);                    					                    
                     let fileToDelete = body.media_infosnippets_media;
                       
-                    //Delete old file\nmosyDeleteFile(fileToDelete);
+                    //Delete old file
+mosyDeleteFile(fileToDelete);
 // Log or store deleted file: fileToDelete
 
                   } catch (fileErr) {

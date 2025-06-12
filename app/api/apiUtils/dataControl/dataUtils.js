@@ -136,7 +136,7 @@ export async function mosyUploadFile(fileObj, subDir = 'uploads/users')
 
 export async function mosyDeleteFile(relativePath) {
   try {
-    const fullPath = path.join(process.cwd(), 'public', relativePath);
+    const fullPath = path.join(process.cwd(), 'storage', relativePath);
 
     await unlink(fullPath);
 

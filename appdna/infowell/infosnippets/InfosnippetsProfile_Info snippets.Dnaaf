@@ -33,7 +33,7 @@ $back_to_list_ = "./$list_file_name";
 $photo_component_placeholders=["profilePic","photoNode"];
 
 $next_js_custom_profile_card=[
-"infosnippets"=>[
+"infosnilllppets"=>[
   'card_name'=>"UserProfileCard", 
  "layout_tag"=>'
  <UserProfileCard

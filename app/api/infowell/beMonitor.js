@@ -7,7 +7,7 @@ export function validateSelect(tblName, qParams) {
      qstr = base64Decode(qParams.q)
     }
 
-    console.log(`validateSelect QSTR is ${qstr}` , qParams)
+    //console.log(`validateSelect QSTR is ${qstr}` , qParams)
 
     let requestIsValid = true 
 
