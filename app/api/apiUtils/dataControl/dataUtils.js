@@ -15,7 +15,8 @@ export async function mosySqlInsert(tbl, fieldsAndValuesJson, formBody) {
     
     if (value === "?") {
       const formKey = `txt_${key}`;
-      const formValue = formBody[formKey];
+      //const formValue = formBody[formKey];
+      const formValue = mmres(formBody[formKey]);
 
       if (formValue !== undefined) {
         magicColumns.push(`\`${key}\``);
@@ -58,7 +59,7 @@ export async function mosySqlUpdate(tbl, fieldsAndValuesJson, formBody, whereStr
 
     if (value === "?") {
       const formKey = `txt_${key}`;
-      const formValue = formBody[formKey];
+      const formValue = mmres(formBody[formKey]);
 
       if (formValue !== undefined) {
         updatePairs.push(`\`${key}\` = '${formValue}'`);
