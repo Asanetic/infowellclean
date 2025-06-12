@@ -54,7 +54,7 @@ export async function mosySqlUpdate(tbl, fieldsAndValuesJson, formBody, whereStr
   let updatePairs = [];
 
   for (let key in fieldsAndValuesJson) {
-    const value = fieldsAndValuesJson[key];
+    const value = mmres(fieldsAndValuesJson[key]);
 
     if (value === "?") {
       const formKey = `txt_${key}`;
