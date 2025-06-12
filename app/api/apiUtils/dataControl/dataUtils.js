@@ -11,7 +11,7 @@ export async function mosySqlInsert(tbl, fieldsAndValuesJson, formBody) {
   let magicValues = [];
 
   for (let key in fieldsAndValuesJson) {
-    const value = fieldsAndValuesJson[key];
+    const value = mmres(fieldsAndValuesJson[key]);
     
     if (value === "?") {
       const formKey = `txt_${key}`;
