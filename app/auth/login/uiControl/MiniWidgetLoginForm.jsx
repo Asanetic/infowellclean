@@ -24,7 +24,7 @@ export default function MiniWidgetLoginForm(
               <div className="m-0 p-1 p-lg-0 row justify-content-center col-md-8 ">
                 
                 <div
-                  className="col-md-6 bg_w_img bg-white"
+                  className="col-md-6 bg_w_img bg-white d-none d-lg-block"
                   style={{ backgroundImage: `url('${loginBgImg}')` }}
                 ></div>
 
