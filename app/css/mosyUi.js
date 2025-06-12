@@ -25,11 +25,23 @@ const MosyUiTheme = () => (
     height: 100% !important;
   }  
 
-.skip_print{
- display:none;
-}
+  .skip_print{
+  display:none;
+  }
+
 }
 
+@media (max-width: 768px) {
+  .pagination-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+
+.rows_per_record{
+ width:50px;
+}
 
 /* nprogress custom styling */
 #nprogress {

@@ -834,8 +834,8 @@ useEffect(() => {
     <div className="mt-4 mb-3 row justify-content-center col-md-12 m-0 p-0 border-top border_set pt-2">
       <nav aria-label="Page navigation" className="col-md-8">
         <div className="row justify-content-center">
-          <div className="overflow-auto w-100">
-            <ul className="pagination justify-content-center flex-wrap">
+          <div className="pagination-wrapper w-100">
+            <ul className="pagination justify-content-center flex-nowrap" style={{ minWidth: 'max-content' }}>
 
               <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                 <button className="page-link" onClick={() => onPageChange(1)}>First</button>
@@ -860,7 +860,7 @@ useEffect(() => {
 
       <div className="col-md-4 p-2">
       <label className="badge">{currentPageSize === 10000000000 ? 'Showing All rows' : `Show ${currentPageSize} rows per page`} | Change</label>
-      <select className=" w-auto" value={currentPageSize} onChange={handlePageSizeChange}>
+      <select className="rows_per_record w-auto" value={currentPageSize} onChange={handlePageSizeChange}>
         {pageSizeOptions.map(size => (
             <option key={size} value={size}>
               {size === 10000000000 ? 'Show All' : `${size}`}
