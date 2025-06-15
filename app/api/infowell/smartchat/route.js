@@ -19,7 +19,8 @@ export async function POST(req) {
         ]
       }),
     });
-  
+
+    
     const data = await response.json();
   
     // Extract assistant's reply
