@@ -4,6 +4,8 @@ import { writeFile, mkdir, unlink } from 'fs/promises';
 import fs from 'fs';
 
 
+
+
 export async function mosySqlInsert(tbl, fieldsAndValuesJson, formBody) {
   const conn = await connectDB();
   
@@ -11,12 +13,11 @@ export async function mosySqlInsert(tbl, fieldsAndValuesJson, formBody) {
   let magicValues = [];
 
   for (let key in fieldsAndValuesJson) {
-    const value = mmres(fieldsAndValuesJson[key]);
+    const value = fieldsAndValuesJson[key];
     
     if (value === "?") {
       const formKey = `txt_${key}`;
-      //const formValue = formBody[formKey];
-      const formValue = mmres(formBody[formKey]);
+      const formValue = formBody[formKey];
 
       if (formValue !== undefined) {
         magicColumns.push(`\`${key}\``);
@@ -42,30 +43,30 @@ export async function mosySqlInsert(tbl, fieldsAndValuesJson, formBody) {
   }
 }
 
-
-// Safety-first update function
 export async function mosySqlUpdate(tbl, fieldsAndValuesJson, formBody, whereStr = "") {
   const conn = await connectDB();
 
-  // Protect your reputation — don't allow mass update
   if (!whereStr || whereStr.trim() === "") {
     throw new Error(`Unsafe update blocked: Missing WHERE clause while updating '${tbl}'`);
   }
 
   let updatePairs = [];
+  let magicValues = [];
 
   for (let key in fieldsAndValuesJson) {
-    const value = mmres(fieldsAndValuesJson[key]);
+    const value = fieldsAndValuesJson[key];
 
     if (value === "?") {
       const formKey = `txt_${key}`;
-      const formValue = mmres(formBody[formKey]);
+      const formValue = formBody[formKey];
 
       if (formValue !== undefined) {
-        updatePairs.push(`\`${key}\` = '${formValue}'`);
+        updatePairs.push(`\`${key}\` = ?`);
+        magicValues.push(formValue);
       }
     } else {
-      updatePairs.push(`\`${key}\` = '${value}'`);
+      updatePairs.push(`\`${key}\` = ?`);
+      magicValues.push(value);
     }
   }
 
@@ -75,7 +76,7 @@ export async function mosySqlUpdate(tbl, fieldsAndValuesJson, formBody, whereStr
   const query = `UPDATE \`${activeDB}\`.\`${tbl}\` SET ${updateStr} ${whereClause}`;
 
   try {
-    const [result] = await conn.execute(query);
+    const [result] = await conn.execute(query, magicValues);
 
     return {
       message: 'Data updated successfully',

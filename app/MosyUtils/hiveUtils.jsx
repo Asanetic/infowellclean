@@ -3,6 +3,8 @@ import { useState , useCallback, useRef } from 'react';
 import { MosyCard } from '../components/MosyCard';
 import saAuthConfigs from '../auth/featureConfig/saAuthConfigs'; 
 
+import {destroyAppSession} from '../auth/AuthUtils';
+
 // data_control/postFormData.js
 export async function mosyPostFormData({ formId, url, method = 'POST', isMultipart = true }) {
   const form = document.getElementById(formId);
@@ -40,6 +42,13 @@ export async function mosyPostFormData({ formId, url, method = 'POST', isMultipa
     body,
   });
 
+  
+  if(res.status=="403"){
+
+    destroyAppSession()
+
+  }
+
   const result = await res.json();
 
   if (!res.ok) {
@@ -50,42 +59,49 @@ export async function mosyPostFormData({ formId, url, method = 'POST', isMultipa
   return result;
 }
 
+
 export async function mosyGetData({
-  endpoint = '', // default endpoint
-  params = {},                    // optional query params
+  endpoint = '',
+  params = {},
+  headers = {}, // 🔥 new param
   onError = (err) => console.error('MosyFetchError:', err),
 }) {
   try {
-    // Ensure params are URL-encoded correctly
     const query = new URLSearchParams(params).toString();
-    const encodedUrlQuery = encodeURIComponent(query);
-
     const url = query ? `${endpoint}?${query}` : endpoint;
 
-    //console.log('Request URL:', url); // Log the final URL for debugging
-    const sessionPrefix = saAuthConfigs.sessionPrefix
+    const sessionPrefix = saAuthConfigs.sessionPrefix;
+    const defaultHeaders = {
+      'Authorization': `Bearer ${mosyGetLSData(`${sessionPrefix}_authToken`)}`,
+    };
+
+    const mergedHeaders = {
+      ...defaultHeaders,
+      ...headers, // 🧠 if there's a conflict, this overrides
+    };
+
 
     const res = await fetch(url, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${mosyGetLSData(`${sessionPrefix}_authToken`)}`
-      }
+      headers: mergedHeaders,
     });
 
-    
+    console.log("mosygetttttt", res)
+    if(res.status=="403"){
+      destroyAppSession()
+    }
+
     if (!res.ok) {
-      //throw new Error(`Fetch failed with status ${res.status}`);
       return res;
     }
 
     const json = await res.json();
 
     if (json.status !== 'success') {
-      //throw new Error(json.message || 'Unknown API error');
-      return json
+      return json;
     }
 
-    return json; // Contains data, page_count etc.
+    return json;
   } catch (err) {
     onError(err);
     return {
@@ -95,6 +111,7 @@ export async function mosyGetData({
     };
   }
 }
+
 
 
 export function mosyHydrateFormData(responseObj, tblCallback = "") {

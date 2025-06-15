@@ -171,7 +171,27 @@ const MosyUiTheme = () => (
   color: #007bff;
 }
 
-                             
+.max_height_300px{
+max-height:300px;
+overflow-y:auto;
+} 
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn.disabled, .btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
                                 
 .msg_modal-content {
   background-color: #fefefe;

@@ -35,7 +35,7 @@ import {
   MosyImageViewer,
   MosyFileUploadButton
 } from '../../UiControl/componentControl';
-import { MosyLiveSearch } from '../../UiControl/customUI';
+import { MosyLiveSearch , loadSmartSearch  } from '../../UiControl/customUI';
 
 
 
@@ -183,6 +183,12 @@ export default function InfosnippetsProfile({ dataIn = {}, dataOut = {} }) {
                     })
                     
                   }}
+                  />
+                  
+                  <MosyActionButton
+                  label=" Smart search"
+                  icon="bolt"
+                  onClick={()=>{loadSmartSearch()}}
                   />
                   
                 </>

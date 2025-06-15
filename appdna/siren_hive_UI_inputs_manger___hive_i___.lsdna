@@ -33,7 +33,7 @@ $back_to_list_ = "./$list_file_name";
 $photo_component_placeholders=["profilePic","photoNode"];
 
 $next_js_custom_profile_card=[
-"infosnilllppets"=>[
+"infoqqsnippets"=>[
   'card_name'=>"UserProfileCard", 
  "layout_tag"=>'
  <UserProfileCard
@@ -47,7 +47,7 @@ $next_js_custom_profile_card=[
 
 
 $next_js_custom_List_card=[
-"infokjjsnippets"=>[
+"infoqqsnippets"=>[
   'card_name'=>"BlogCard",   
    "replacements"=>[
     "editLink"=>"editlink",
@@ -213,7 +213,7 @@ import {
          MosyImageViewer,
          MosyFileUploadButton
        } from '../../UiControl/componentControl';
-import { MosyLiveSearch } from '../../UiControl/customUI';
+import { MosyLiveSearch , loadSmartSearch  } from '../../UiControl/customUI';
 
 ";
 
@@ -311,7 +311,9 @@ $profile_btn_table_array=[
         })
         
         ",  
-      //"edit: Review request"=>"console.log(`first next js button....`)",
+    
+    
+      "bolt: Smart search"=>"loadSmartSearch()",
       //"search: Search users"=>"console.log(`first next js button users test....`)",
       //"refresh: sync work schedule"=>"syncWorkSchedule()"
   ],
