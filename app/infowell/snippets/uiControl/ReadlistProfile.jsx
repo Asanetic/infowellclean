@@ -238,6 +238,7 @@ export default function ReadlistProfile({ dataIn = {}, dataOut = {} }) {
                                 id="div_notes" name="div_notes" placeholder="Notes"><ReactMarkdown>{(infosnippetsNode?.notes || "")}</ReactMarkdown></div>
                               </div>)}
                               
+                              
                               <MosySmartField
                               module="infosnippets"
                               field="date_created"
