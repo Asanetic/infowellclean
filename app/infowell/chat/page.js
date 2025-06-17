@@ -5,8 +5,8 @@ import InfosnippetsProfile from '../snippets/uiControl/InfosnippetsProfile';
 import { InteprateInfosnippetsEvent } from '../snippets/dataControl/InfosnippetsRequestHandler';
 
 import ChatHolder from './ChatHolder'
-import { MosySpace, MosyTitleTag } from '../../../../nextinvoice/app/nextinvoice/UiControl/componentControl';
 
+import { MosySpace, MosyTitleTag }  from '../UiControl/componentControl'
     
 export async function generateMetadata({ searchParams }) {
   const mosyTitle = "Info well smart chat"//searchParams?.mosyTitle || "Info snippets";
