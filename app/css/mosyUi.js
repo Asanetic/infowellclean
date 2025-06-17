@@ -712,6 +712,36 @@ tr:hover .table_cell_dropdown-content {
       display: block
 }
   
+.gpt-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-bubble {
+  background-color: #cce5ff;
+  padding: 10px 15px;
+  border-radius: 12px;
+  max-width: 80%;
+  align-self: flex-end;
+  margin-left: auto;
+  font-size: 14px;
+}
+
+.gpt-bubble {
+  background-color: #f1f1f1;
+  padding: 10px 15px;
+  border-radius: 12px;
+  max-width: 80%;
+  align-self: flex-start;
+  margin-right: auto;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chat-box {
+  font-family: 'Segoe UI', sans-serif;
+}
+
   
 .bg_w_img {
   background-repeat: no-repeat;
@@ -723,7 +753,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background: #f8f9fa;
+  background:${mosyThemeConfigs.bodyColor};
   font-family: "Poppins", "Helvetica Neue", "Open Sans", "Arial", "sans-serif";
   line-height: 30px;
   font-weight: 400;

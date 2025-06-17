@@ -1,5 +1,5 @@
 "use client";
-import { useState , useCallback, useRef } from 'react';
+import { useState , useCallback, useRef , Fragment } from 'react';
 import { MosyCard } from '../components/MosyCard';
 import saAuthConfigs from '../auth/featureConfig/saAuthConfigs'; 
 
@@ -588,3 +588,12 @@ export function mosyTonum(req_number, decplc = 0) {
   return withCommas;
 }
 
+
+export function mosyNl2br(text) {
+  return text.split('\n').map((line, idx) => (
+    <Fragment key={idx}>
+      {line}
+      <br />
+    </Fragment>
+  ));
+}

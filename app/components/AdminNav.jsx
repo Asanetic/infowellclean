@@ -94,7 +94,17 @@ export default function NavSidebar({
                 </div>
               </div>
               <a className="dropdown-item d-none" href="/adminaccount">My Profile</a>
-              <a className="dropdown-item d-none" href="/adminaccount">Account Settings</a>
+              <Link className="dropdown-item" href={`${hiveRoutes.infowell}/chat`}>
+               <i className='mr-2 fa fa-comment'></i>Smart Chat
+              </Link>
+              <Link className="dropdown-item" href={`${hiveRoutes.infowell}/snippets/list`}>
+               <i className='mr-2 fa fa-copy'></i> Notes
+              </Link>
+              <Link className="dropdown-item" href={`${hiveRoutes.infowell}/snippets/readlist`}>
+               <i className='mr-2 fa fa-book'></i> Read list
+              </Link>              
+              <Link className="dropdown-item" href={`${hiveRoutes.infowell}/ai/list`}>
+              <i className='mr-2 fa fa-bolt'></i> Agents</Link>
               <a
                 className="dropdown-item cpointer"
                 onClick={() => {
@@ -102,7 +112,7 @@ export default function NavSidebar({
                   
                 }}
               >
-                Logout
+                Logout <i className='ml-2 fa fa-arrow-right'></i>
               </a>
             </div>
           </li>

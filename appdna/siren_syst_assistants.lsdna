@@ -1,0 +1,20 @@
+//dna options== Digital Nexus Architecture (DNA) 
+$dna_file_name = "syst_assistants"; 
+$create_dna = "yes"; //yes | no; 
+$overwrite_dna_file = "yes"; //yes | no 
+//dna options==
+
+
+//======= create table in db
+
+//=========== CLIENTS TABLE
+$client_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`record_id` varchar(100) NOT NULL,
+`name` varchar(255) NOT NULL,
+`remark` varchar(50),
+`assitant_id` varchar(255),
+`status` varchar(100)";
+
+$client_table = 'assistants';
+create_table($mysqliconn, $dbname, $client_table, $client_table_script);

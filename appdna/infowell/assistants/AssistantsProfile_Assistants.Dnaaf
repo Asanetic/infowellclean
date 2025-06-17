@@ -2,38 +2,38 @@ eval(find_snippet('986'));
 eval(find_snippet("1171")); // camel case 
 
 $custom_col_main_file__="../appdna/custom_colums.php";
-$table_config_file__="../appdna/infowell/infosnippets/tbl_attr/tbl_attr_readonlysnippet_dnaaf.php";
+$table_config_file__="../appdna/infowell/infosnippets/tbl_attr/tbl_attr_snippetmgr_dnaaf.php";
 
 if(file_exists($custom_col_main_file__))
 {
   include($custom_col_main_file__);
 }
 
-$primary_table__="infosnippets";
+$primary_table__="assistants";
 $tbl_id_column_name="primkey";
 $record_id_col_name="record_id";
 
 
-$nextjs_tbl_alias="snippets";
+$nextjs_tbl_alias="ai";
 
 // Report configurations
-$main_report_title_="Read list";
-$api_endpoint_name="readonly";
+$main_report_title_="Assistants";
+$api_endpoint_name="manage";
 
 $multigrid_col_span="9";
 $enable_multigrid_view_more_link ="";
   
 $last_file_name=str_replace(" ","", strtolower($main_report_title_));//$api_endpoint_name;
 
-$profile_file_name="read";
-$list_file_name="readlist";
+$profile_file_name="profile";
+$list_file_name="list";
 
 $back_to_list_ = "./$list_file_name";
 
 $photo_component_placeholders=["profilePic","photoNode"];
 
 $next_js_custom_profile_card=[
-"infosnippets"=>[
+"infoqqsnippets"=>[
   'card_name'=>"UserProfileCard", 
  "layout_tag"=>'
  <UserProfileCard
@@ -78,7 +78,7 @@ if (!file_exists($features_app_folder)) mkdir($features_app_folder);
 
 ///=================================== basic template setup 
 
-$override_def_col_size="col-md-6 hive_data_cell ";
+$override_def_col_size="col-md-7 hive_data_cell ";
 
 $skip_hive_sites=["hive_site_id","hive_site_name"];
 
@@ -86,7 +86,7 @@ $skip_cols_list=array_merge($skip_hive_sites, $skip_cols_list);
 
 $skip_cols_profile=array_merge($skip_hive_sites, $skip_cols_profile);
 
-$override_segmentation_section_class="col-md-12 bg-white border border_set shadow-md p-4 mb-4 hive_form_section";
+$override_segmentation_section_class="col-md-8 bg-white border border_set shadow-md p-4 mb-4 hive_form_section";
 
 $additional_details_segment_title="";
   
@@ -96,7 +96,7 @@ $def_profile_container_class="col-md-11 rounded text-left p-2 mb-0  bg-white ";
 $def_profile_inner_container_class="col-md-12 p-2 pr-lg-4 pl-lg-4 m-0";  
 $override_justify_class="justify-content-center";
 $overide_img_section_class="col-md-6 mr-lg-5";
-$override_large_col_size="col-md-12 hive_data_cell";
+$override_large_col_size="col-md-7 hive_data_cell";
 $image_style_="rounded_avatar";
 ///=================================== basic template setup 
 
@@ -213,7 +213,7 @@ import {
          MosyImageViewer,
          MosyFileUploadButton
        } from '../../UiControl/componentControl';
-import { MosyLiveSearch , loadSmartSearch  } from '../../UiControl/customUI';
+import { MosyLiveSearch , loadSmartSearch , activateAssistant } from '../../UiControl/customUI';
 
 ";
 
@@ -247,8 +247,7 @@ $widget_and_ist_array=[
 /// mini list creator configs
 $mini_list_array=[
   
-     "tag ='\${infosnippetsNode?.tag}' order by primkey desc "=>''.$camelcasetbl_prefix.'List:{`Related ${infosnippetsNode?.tag} Notes`}:../snippets/list:::InteprateReadlistEvent', 
-     ""=>''.$camelcasetbl_prefix.'List:{`More Notes`}:../snippets/list:::InteprateReadlistEvent', 
+     ""=>''.$camelcasetbl_prefix.'List:{`More assistants`}:../ai/list:::InteprateAssistantsEvent', 
      //"deposit_file_id='\${bankingNode?.record_id}' order by primkey desc "=>'DeposithistoryList:{`Deposits list`}:../inventory/fuel::hide:InteprateDeposithistoryEvent', 
     
   ];
@@ -265,30 +264,7 @@ $subprofile_list_array=[
 $list_btn_table_array=[
   
   $primary_table__=>[
-          
-    "tag: Search by tag"=>"
-      MosyLiveSearch({
-        api:' /api/infowell/snippets/infosnippets', 
-        displayField:'tag', 
-        tableName:'infosnippets',
-        actionName : 'mosyfilter',
-        title:'Search by tag',
-        actionData : {path: '../snippets/list', router : router , qstr : `tag='{{tag}}'`, stateSetters : stateItemSetters}        
-        })
-        
-        ",
-    
-    "bolt: Search by title"=>"
-      MosyLiveSearch({
-        api:' /api/infowell/snippets/infosnippets', 
-        displayField:'title', 
-        tableName:'infosnippets',
-        actionName : 'mosyfilter',
-        title:'Search by title',
-        actionData : {path: '../snippets/list', router : router , qstr : `primkey='{{primkey}}'`, stateSetters : stateItemSetters}        
-        })
-        
-        ",    
+   
       //"edit: Review request"=>"console.log(`first next js button....`)",
       //"search: Search users"=>"console.log(`first next js button users test....`)",
       //"refresh: sync work schedule"=>"syncWorkSchedule()"
@@ -300,20 +276,7 @@ $list_btn_table_array=[
 $profile_btn_table_array=[
   
   $primary_table__=>[
-    "copy: Find notes"=>"
-      MosyLiveSearch({
-        api:' /api/infowell/snippets/infosnippets', 
-        displayField:'title', 
-        tableName:'infosnippets',
-        actionName : 'load_profile',
-        title:'Search by title',
-        actionData : {path: '../snippets/profile', router : router , token : `{{primkey}}`, stateSetters : stateItemSetters , actionName:`load_profile`}        
-        })
-        
-        ",  
-    
-    
-      "bolt: Smart search"=>"loadSmartSearch()",
+    "bolt: Activate"=>'activateAssistant({agentId:(assistantsNode?.assistant_id || ""), agentName: (assistantsNode?.name || "")})',      
       //"search: Search users"=>"console.log(`first next js button users test....`)",
       //"refresh: sync work schedule"=>"syncWorkSchedule()"
   ],

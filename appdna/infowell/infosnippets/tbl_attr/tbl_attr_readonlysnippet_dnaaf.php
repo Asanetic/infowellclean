@@ -159,7 +159,7 @@ $novanest_module_ui_blueprint_=[
     "sum_cols_list"=>['columns'],
     
     //============================================    on the profile page for these columns use textarea component
-    "textarea_array"=>['notes',"remark"],
+    "textarea_array"=>["remark"],
     
     //============================================    on the profile page for these columns use textarea component
     "content_editable"=>['column_name',"column_name2..."],
@@ -170,13 +170,13 @@ $novanest_module_ui_blueprint_=[
     //$static_drop_down_array=['column_name1'=>'Male,Female','column_name2'=>'Complete,Pending,Onprogress'];
 
     //==========================================          | on the profile page for these columns use dynamic drop down values
-    "dynamic_drop_down_array"=>["tag"],
+    "dynamic_drop_down_array"=>[],
     
     //=============================================       | on the profile page, these columns are password values
     "password_columns"=>['login_password',"column_name2..."],
 
     //==============================================      | on the profile page, these columns are titles they have a input with class col-md-12
-    "title_columns"=>['client_name','column_name2...'],
+    "title_columns"=>['title','column_name2...'],
 
     //==============================================      | on the profile page, these columns are dates Y-m-d
     "date_columns"=>["date_created"],
@@ -211,7 +211,7 @@ $novanest_module_ui_blueprint_=[
     "custom_multi_grid_rows"=>[],
         
     //additional column values on the profile ui
-    "custom_profile_col_data"=>["national_id"=>"?"],
+    "custom_profile_col_data"=>["title"=>"?", "tag"=>"?", "notes"=>"?"],
     
     "custom_profile_default_data"=>[],
     

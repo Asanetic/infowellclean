@@ -8,3 +8,14 @@ node_modules/
 terminal/
 
 openai.php
+
+.env.production.local
+
+.env.local
+
+phpmagicbits.php
+
+.history
+.git
+
+jsondb.php

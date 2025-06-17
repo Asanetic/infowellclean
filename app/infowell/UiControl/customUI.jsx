@@ -1,7 +1,7 @@
 import { LiveSearchDropdown } from "./componentControl"
 import { closeMosyCard, MosyCard } from "../../components/MosyCard";
 
-import { magicRandomStr } from "../../MosyUtils/hiveUtils";
+import { magicRandomStr, mosyDeleteLSData, mosySetLSData, mosyGetLSData } from "../../MosyUtils/hiveUtils";
 import { MosyNotify } from "../../MosyUtils/ActionModals";
 import { chatWithGPT } from "./customFunctions";
 
@@ -96,76 +96,113 @@ export function MosyLiveSearch({
   }
   
   export function loadSmartSearch() {
-    // Create a container ID for the response
-    const responseBoxId = "qchat_response_box";
-  
     MosyCard(
       "",
-      <>
-        <div className="col-md-12 text-left h4 m-0 pt-2 pl-0 pr-0 pb-2 d-none ">
-          <span className="m-0 p-0 label_text">🧠 Request search</span>
-        </div>
-  
-        <div className="form-group col-md-12 text-left p-0 m-0 pt-2">
-          <label className="m-0 p-0 label_text">Ask anything</label>
-          <input
-            className="m-0 form-control"
-            id="txt_qchat"
-            name="txt_qchat"
-            placeholder="e.g., Should I open a bakery or a car wash?"
-            type="text"
-          />
-        </div>
-  
-        <div className="col-md-12 text-right pt-2 m-0 p-0 ">
-          <div
-            className="cpointer btn btn-primary mb-3"
-            onClick={async () => {
-              const input = document.getElementById("txt_qchat").value.trim();
-              const responseBox = document.getElementById(responseBoxId);
-              const goBtn = event.currentTarget;
-            
-              if (!input) {
-                responseBox.innerHTML = "<div class='text-danger'>Please enter a question.</div>";
-                return;
-              }
-            
-              // Disable button and show thinking
-              //goBtn.classList.add("disabled");
-              responseBox.innerHTML = `<i class='fa fa-spinner fa-spin'></i> Thinking...`;
-            
-              try {
-                const reply = await chatWithGPT(input);
-                const formattedReply = reply.replace(/(?:\r\n|\r|\n)/g, "<br>");
-            
-                responseBox.innerHTML = `
-                  <div class="gpt-bubble-wrapper mt-3 max_height_300px">
-                    <div class="gpt-bubble text-left cpointer" title="Click to copy">
-                      ${formattedReply}
-                    </div>
-                  </div>`;
-            
-                // Enable copy-to-clipboard
-                document.querySelector(".gpt-bubble").onclick = () => {
-                  navigator.clipboard.writeText(reply);
-                  responseBox.innerHTML += `<div class="text-success small mt-2">✅ Copied to clipboard!</div>`;
-                };
-              } catch (err) {
-                responseBox.innerHTML = `<div class="text-danger">❌ GPT failed: ${err.message}</div>`;
-              } finally {
-                // Re-enable the button
-                //goBtn.classList.remove("disabled");
-                goBtn.innerHTML = `<i class="fa fa-send"></i> Go`;
-              }
-            }}
-            
-          >
-            <i className="fa fa-send"></i> Go
-          </div>
-        </div>
-  
-        <div className="col-md-12" id={responseBoxId}></div>
-      </>
+      <SmartChatUI/>
     );
+  }
+
+  export function SmartChatUI(newChat=true)
+  {
+
+    const responseBoxId = "qchat_response_box";
+    const inputId = "txt_qchat";
+
+    if(newChat){
+     mosyDeleteLSData("info_chat_thread_id")
+    }
+
+   const chatAgent = mosyGetLSData("active_info_agent_name","Infowell")
+
+
+    return (<>
+      <div className="col-md-12 text-left h4 m-0 p-0">
+        <span className="m-0 p-0 label_text">Agent : {chatAgent}</span>
+      </div>
+
+      {/* Response/chat bubbles area */}
+      <div
+          className="col-md-12 chat-box  mb-3 rounded cpointer"
+          style={{ height: "300px", overflowY: "auto"}}
+          id={responseBoxId}
+          onClick={() => {
+            const chatContent = document.getElementById(responseBoxId).innerText;
+            navigator.clipboard.writeText(chatContent);
+            alert("✅ Entire chat copied!");
+          }}
+        >
+        </div>
+
+
+      {/* Chat input at bottom */}
+      <div className="col-md-12 d-flex align-items-end">
+        <textarea
+          className="form-control"
+          id={inputId}
+          style={{ resize: "none", minHeight : "100px" }}
+          placeholder="Whats on your mind"
+        ></textarea>
+
+        <button
+          className="btn ml-2 border pl-3 pr-3 btn-primary"
+          style={{
+            position: "absolute",
+            bottom: "5px",
+            right: "15px"
+          }}
+          onClick={async (event) => {
+            const input = document.getElementById(inputId).value.trim();
+            const responseBox = document.getElementById(responseBoxId);
+            const goBtn = event.currentTarget;
+
+            if (!input) return;
+
+            // Show thinking bubble
+            responseBox.innerHTML += `
+              <div class="gpt-bubble-wrapper mt-3">
+                <div class="user-bubble text-right">You : ${input}<br></div>
+                <div class="gpt-bubble text-left mt-2"><i class='fa fa-spinner fa-spin'></i> Thinking...</div>
+              </div>
+            `;
+            document.getElementById(inputId).value = "";
+            responseBox.scrollTop = responseBox.scrollHeight;
+
+            try {
+              const reply = await chatWithGPT(input);
+              const formattedReply = reply.replace(/(?:\r\n|\r|\n)/g, "<br>");
+              
+              // Replace spinner with actual reply
+              const allBubbles = responseBox.querySelectorAll(".gpt-bubble");
+              const lastBubble = allBubbles[allBubbles.length - 1];
+              lastBubble.innerHTML = `SC : ${formattedReply}<br>`;
+              lastBubble.setAttribute("title", "Click to copy");
+
+              // Copy-to-clipboard support
+              lastBubble.onclick = () => {
+                navigator.clipboard.writeText(reply);
+                lastBubble.innerHTML += `<div class="text-success small mt-2">✅ Copied!</div>`;
+              };
+            } catch (err) {
+              const allBubbles = responseBox.querySelectorAll(".gpt-bubble");
+              const lastBubble = allBubbles[allBubbles.length - 1];
+              lastBubble.innerHTML = `<span class="text-danger">❌ GPT error: ${err.message}</span>`;
+            }
+
+            responseBox.scrollTop = responseBox.scrollHeight;
+          }}
+        >
+          <i className="fa fa-paper-plane fa-x2"></i>
+        </button>
+      </div>
+    </>)
+  }
+
+  export function activateAssistant({agentId ="", agentName=""})
+  {
+    mosySetLSData("active_info_agent_id", agentId)
+    mosySetLSData("active_info_agent_name", agentName)
+
+    MosyNotify({message : `Agent ${agentName} activated`, icon:"check-circle", iconColor : "text-success"})      
+
   }
   

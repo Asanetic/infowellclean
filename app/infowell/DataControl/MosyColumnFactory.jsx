@@ -1,5 +1,8 @@
 const MosyColumnFactory = {
 
+   //-- assistants cols--//
+  assistants: ["name", "remark", "assitant_id", "status"],
+
    //-- infosnippets cols--//
   infosnippets: ["media", "title", "tag", "notes", "date_created"],
 
