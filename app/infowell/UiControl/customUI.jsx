@@ -167,6 +167,7 @@ export function MosyLiveSearch({
             document.getElementById(inputId).value = "";
             responseBox.scrollTop = responseBox.scrollHeight;
 
+            
             try {
               const reply = await chatWithGPT(input);
               const formattedReply = reply.replace(/(?:\r\n|\r|\n)/g, "<br>");
