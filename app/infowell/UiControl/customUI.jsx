@@ -160,7 +160,7 @@ export function MosyLiveSearch({
             // Show thinking bubble
             responseBox.innerHTML += `
               <div class="gpt-bubble-wrapper mt-3">
-                <div class="user-bubble text-right">You : **<br><br>${input}** <br><br></div>
+                <div class="user-bubble text-right">You : <br>br>**${input}** <br><br></div>
                 <div class="gpt-bubble text-left mt-2"><i class='fa fa-spinner fa-spin'></i> Thinking...</div>
               </div>
             `;
