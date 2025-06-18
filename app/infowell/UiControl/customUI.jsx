@@ -160,14 +160,14 @@ export function MosyLiveSearch({
             // Show thinking bubble
             responseBox.innerHTML += `
               <div class="gpt-bubble-wrapper mt-3">
-                <div class="user-bubble text-right">You : ${input}<br><br></div>
+                <div class="user-bubble text-right">You : <br><br><b>${input}</b> <br><br></div>
                 <div class="gpt-bubble text-left mt-2"><i class='fa fa-spinner fa-spin'></i> Thinking...</div>
               </div>
             `;
             document.getElementById(inputId).value = "";
             responseBox.scrollTop = responseBox.scrollHeight;
 
-            
+
             try {
               const reply = await chatWithGPT(input);
               const formattedReply = reply.replace(/(?:\r\n|\r|\n)/g, "<br>");
