@@ -93,7 +93,7 @@ export async function POST(req) {
       status = pollJson.status;
       attempts++;
 
-      if (status !== "completed") await new Promise(r => setTimeout(r, 1500));
+      if (status !== "completed") await new Promise(r => setTimeout(r, 2500));
     }
 
     if (status !== "completed") {
