@@ -235,7 +235,7 @@ export default function ReadlistProfile({ dataIn = {}, dataOut = {} }) {
                               <div className="form-group col-md-12 hive_data_cell  ">
                                 <label >Notes</label>
                                 <div className="border border_set p-2 rounded_medium f pt-3" 
-                                id="div_notes" name="div_notes" placeholder="Notes"><ReactMarkdown>{(infosnippetsNode?.notes || "")}</ReactMarkdown></div>
+                                id="div_notes" name="div_notes" placeholder="Notes" style={{lineHeight :"40px"}}><ReactMarkdown>{(infosnippetsNode?.notes || "")}</ReactMarkdown></div>
                               </div>)}
                               
 

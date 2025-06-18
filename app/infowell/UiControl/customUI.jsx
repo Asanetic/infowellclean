@@ -160,7 +160,7 @@ export function MosyLiveSearch({
             // Show thinking bubble
             responseBox.innerHTML += `
               <div class="gpt-bubble-wrapper mt-3">
-                <div class="user-bubble text-right">You : ${input}<br></div>
+                <div class="user-bubble text-right">You : ${input}<br><br></div>
                 <div class="gpt-bubble text-left mt-2"><i class='fa fa-spinner fa-spin'></i> Thinking...</div>
               </div>
             `;
@@ -174,7 +174,7 @@ export function MosyLiveSearch({
               // Replace spinner with actual reply
               const allBubbles = responseBox.querySelectorAll(".gpt-bubble");
               const lastBubble = allBubbles[allBubbles.length - 1];
-              lastBubble.innerHTML = `SC : ${formattedReply}<br>`;
+              lastBubble.innerHTML = `SC : ${formattedReply}<br><br>`;
               lastBubble.setAttribute("title", "Click to copy");
 
               // Copy-to-clipboard support
