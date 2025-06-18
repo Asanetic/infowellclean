@@ -373,7 +373,7 @@ export default function InfosnippetsProfile({ dataIn = {}, dataOut = {} }) {
           }
           `}
         </style>
-        {infosnippetsNode?.primkey && (
+        
           <section className="col-md-12 m-0 bg-white pt-5 p-0 ">
             <h5 className="col-md-12 text-left  border-bottom pl-lg-1 text-muted mb-3"> {`More Notes`} </h5>
             
@@ -398,7 +398,7 @@ export default function InfosnippetsProfile({ dataIn = {}, dataOut = {} }) {
             }}
             />
           </section>
-        )}
+        
       </div>
     </div>
   </div>
